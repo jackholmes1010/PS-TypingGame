@@ -1,6 +1,14 @@
 Clear-Host
-$text = "PowerShell (including Windows PowerShell and PowerShell Core) is a task automation and configuration management framework from Microsoft, consisting of a command-line shell and associated scripting language built on the .NET Framework and .NET Core. Initially a Windows component only, PowerShell was made open-source and cross-platform on 18 August 2016. In PowerShell, administrative tasks are generally performed by cmdlets (pronounced command-lets), which are specialized .NET classes implementing a particular operation. Sets of cmdlets may be combined into scripts, executables (which are standalone applications), or by instantiating regular .NET classes (or WMI/COM Objects). These work by accessing data in different data stores, like the file system or registry, which are made available to the PowerShell runtime via PowerShell providers."
-Write-Host "`n`n`n`n`n`n`n$text" -BackgroundColor Black -ForegroundColor Cyan
+$text = "PowerShell (including Windows PowerShell and PowerShell Core) is a task automation and configuration management framework from Microsoft, consisting of a command-line shell and associated scripting language built on the .NET Framework and .NET Core."
+# Print a bunch of lines (this has only artistic value)...
+for ($i = 0; $i -lt 9; $i++) {
+    for ($j = 0; $j -lt ($Host.UI.RawUI.WindowSize.Width); $j++) {
+        Write-Host -NoNewLine "$" -ForegroundColor Gray -BackgroundColor Black
+    }
+}
+Write-Host -NoNewline `n`n
+Write-Host "$text" -BackgroundColor Black -ForegroundColor Cyan
+Write-Host -NoNewline `n`n
 
 # The index of the character in the text currently being typed.
 $charIndex = 0
@@ -14,6 +22,17 @@ $wordsTyped = 0
 $timer = [System.Diagnostics.StopWatch]::StartNew()
 
 while ($true) {
+    # Update progress...
+    if ($charIndex -lt 1) {
+        $percentComplete = 0
+    }
+    else {
+        $percentComplete = ($charIndex/$text.length) * 100
+    }
+
+    $wpm = [Math]::Round($wordsTyped/$timer.Elapsed.TotalMinutes, 2)    
+    Write-Progress "WPM: $wpm." -PercentComplete $percentComplete
+
     $key = [System.Console]::ReadKey($true)
 
     if ($key.Key -eq "Escape") {
@@ -80,17 +99,6 @@ while ($true) {
             $incorrectCharacters++
         }
     }
-
-    # Update progress...
-    if ($charIndex -lt 1) {
-        $percentComplete = 0
-    }
-    else {
-        $percentComplete = ($charIndex/$text.length) * 100
-    }
-
-    $wpm = [Math]::Round($wordsTyped/$timer.Elapsed.TotalMinutes, 2)    
-    Write-Progress "WPM: $wpm." -PercentComplete $percentComplete
 }
 
 Write-Host "WPM: $wpm"
