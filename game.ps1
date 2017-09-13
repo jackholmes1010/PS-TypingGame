@@ -27,7 +27,7 @@ function _generateRandomParagraph() {
 
 # == Setup game variables... ===========================
 # ======================================================
-# The randomly generated paragraph to type
+# The randomly generated paragraph to type.
 $text = _generateRandomParagraph
 # The index of the character in the text currently being typed.
 $charIndex = 0
@@ -54,16 +54,9 @@ Write-Host -NoNewline `n`n
 # The starting position of the cursor in the console.
 $startPosition = $Host.UI.RawUI.CursorPosition
 while ($true) {
-    
-    # Update the progress (percentage of text completed and WPM)
-    if ($charIndex -lt 1) {
-        $percentComplete = 0
-    }
-    else {
-        $percentComplete = ($charIndex/$text.length) * 100
-    }
+    # Update the progress (percentage of text completed and WPM).
     $wpm = [Math]::Round($wordsTyped/$timer.Elapsed.TotalMinutes, 2)    
-    Write-Progress "WPM: $wpm." -PercentComplete $percentComplete -Status "Completed:"
+    Write-Progress "WPM: $wpm." -PercentComplete (($charIndex/$text.length) * 100) -Status "Completed:"
 
     # == Exit the game
     $key = [System.Console]::ReadKey($true)
