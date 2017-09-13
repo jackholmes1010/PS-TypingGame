@@ -62,7 +62,7 @@ while ($true) {
         $percentComplete = ($charIndex/$text.length) * 100
     }
     $wpm = [Math]::Round($wordsTyped/$timer.Elapsed.TotalMinutes, 2)    
-    Write-Progress "WPM: $wpm." -PercentComplete $percentComplete -Status "Completed:" -Status "Completed:"
+    Write-Progress "WPM: $wpm." -PercentComplete $percentComplete -Status "Completed:"
 
     # == Exit the game
     $key = [System.Console]::ReadKey($true)
