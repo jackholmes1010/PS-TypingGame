@@ -33,8 +33,6 @@ $text = _generateRandomParagraph
 $charIndex = 0
 # The number of consecutive incorrect characters typed.
 $incorrectCharacters = 0
-# The starting position of the cursor in the console.
-$startPosition = $Host.UI.RawUI.CursorPosition
 # Number of words typed, used to track the WPM.
 $wordsTyped = 0
 # Timer to track the WPM.
@@ -53,7 +51,10 @@ Write-Host -NoNewline `n`n
 
 # == Start game loop... ================================
 # ======================================================
+# The starting position of the cursor in the console.
+$startPosition = $Host.UI.RawUI.CursorPosition
 while ($true) {
+    
     # Update the progress (percentage of text completed and WPM)
     if ($charIndex -lt 1) {
         $percentComplete = 0
@@ -70,6 +71,7 @@ while ($true) {
         Write-Host -NoNewline `n
         break
     }
+
     # == Remove a character from the console
     elseif ($key.Key -eq "Backspace") {
         # Once we reach the start of the console, we 
@@ -88,7 +90,6 @@ while ($true) {
                 # Deleting the last character on the previous line will take us back
                 # to the next line, so we need to reset the cursor position again.
                 $position = $Host.UI.RawUI.CursorPosition
-                $position.Y = $position.Y - 1
                 $position.X = $Host.UI.RawUI.BufferSize.Width - 1
                 $Host.UI.RawUI.CursorPosition = $position
             }
